@@ -56,6 +56,7 @@ function game() {
 // Create a loop, so that a 5 round game is played
     for(let i = 0; i<5; i++) {
         // Inside the loop call playRound()  so that a round is played
+        // Use prompt() to get input from the user.
         let result = playRound(prompt('Please choose Rock, Paper, or Scissors'),computerPlay());
         console.log(result);
         if(result.includes('You win')) humanScore += 1;
@@ -80,14 +81,6 @@ function game() {
 
 
 
-
-
-
-
-// At this point you should be using console.log() to display the results of each round and the winner at the end.
-// Use prompt() to get input from the user. Read the docs here if you need to.
-// Feel free to re-work your previous functions if you need to. Specifically, you might want to change the return value to something more useful.
-// Feel free to create more “helper” functions if you think it would be useful.
 
 
 
