@@ -1,3 +1,6 @@
+const results = document.getElementById('results');
+const score = document.getElementById('score');
+
 // Create a function called computerPlay
 
 function computerPlay() {
@@ -17,7 +20,9 @@ function playRound(playerSelection, computerSelection) {
     playerSelection = playerSelection.replace(playerSelection.charAt(0),playerSelection.charAt(0).toUpperCase());
     // If user enters something completely different in prompt, say that the game is not counted
     if(!(playerSelection === 'Rock' || playerSelection === 'Paper' || playerSelection === 'Scissors')) return 'Wrong input by player. Round not counted.'
-    console.log(playerSelection);
+    const para = document.createElement('p');
+    para.textContent = `You selected ${playerSelection}.`;
+    results.appendChild(para);
 
     // Create a conditional statement to check  whether Player or Computer has won depending on input
     //- and then return a string that declares the winner of the round like so: 
@@ -25,37 +30,48 @@ function playRound(playerSelection, computerSelection) {
     // "You tie! Rock can't beat Rock"
     // "You win! Scissors lose to Rock"
     if (playerSelection === 'Rock' && computerSelection === 'Scissors' || playerSelection === "Paper" && computerSelection === "Rock" || 
-    playerSelection === 'Scissors' && computerSelection === 'Paper') return `You win! ${computerSelection} lose to ${playerSelection}.`;
+    playerSelection === 'Scissors' && computerSelection === 'Paper') return `You win this round! ${computerSelection} lose to ${playerSelection}.`;
     else if (playerSelection === 'Rock' && computerSelection === 'Paper' || playerSelection === "Paper" && computerSelection === "Scissors" || 
-    playerSelection === 'Scissors' && computerSelection === 'Rock') return `You lose! ${computerSelection} beats ${playerSelection}.`;
-    else return `It's a tie. ${computerSelection} can't beat ${playerSelection}.`;
+    playerSelection === 'Scissors' && computerSelection === 'Rock') return `You lose this round! ${computerSelection} beats ${playerSelection}.`;
+    else return `This round is a tie. ${computerSelection} can't beat ${playerSelection}.`;
 }
 
-console.log(game());
+// console.log(game());
 
-// Create a function game()
-function game() {
-    // Create a variable to keep score
-    let humanScore = 0;
-    let computerScore = 0;
-
-    // Create a loop, so that a 5 round game is played
-    for(let i = 0; i<5; i++) {
-        // Inside the loop call playRound()  so that a round is played
-        // Use prompt() to get input from the user.
-        let result = playRound(prompt('Please choose Rock, Paper, or Scissors'),computerPlay());
-        console.log(result);
-        if(result.includes('You win')) humanScore += 1;
-        else if (result.includes('You lose')) computerScore += 1;
-    }
-
-    // At the end of the loop, report a winner, maybe return or console.log
-    if (humanScore > computerScore) {
-        return "HUMANS WIN"
-    } else if (computerScore > humanScore) {
-        return "COMPUTERS DOMINATE"
+// Create a function that is run when the game is ending()
+function gameEnd() {
+    // At the end of the loop, report a winner
+    if (scoreHuman > scoreComputer) {
+        alert("HUMANS WIN")
+    } else if (scoreComputer > scoreHuman) {
+        alert("COMPUTERS DOMINATE")
     } else {
-        return 'THIS GAME WAS A TIE'
+        alert('THIS GAME WAS A TIE')
     }
-
+    // Set score counters to zero
+    scoreHuman = 0;
+    scoreComputer = 0;
+    score.textContent = "0 : 0";
+    results.innerHTML = '';
 }
+
+// Add an event listener to the buttons that call your playRound function with the correct 
+//     playerSelection every time a button is clicked. (you can keep the console.logs for this step)
+const buttons = document.getElementsByTagName('button');
+for (let item of buttons) {
+    item.addEventListener('click', () => {
+        let resultString = playRound(item.id,computerPlay());
+        const para = document.createElement('p');
+        para.textContent = resultString;
+        results.appendChild(para);
+        if(resultString.includes('You win')) scoreHuman += 1;
+        else if (resultString.includes('You lose')) scoreComputer += 1;
+        score.textContent = `${scoreHuman} : ${scoreComputer}`;
+        // added a setTimeout because the alert was displayed before the DOM Content changed.
+        if(scoreHuman === 5 || scoreComputer === 5) setTimeout(gameEnd, 0);
+    })
+}
+
+// Display the running score, and announce a winner of the game once one player reaches 5 points.
+let scoreComputer = 0;
+let scoreHuman = 0;
