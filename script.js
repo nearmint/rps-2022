@@ -36,8 +36,6 @@ function playRound(playerSelection, computerSelection) {
     else return `This round is a tie. ${computerSelection} can't beat ${playerSelection}.`;
 }
 
-// console.log(game());
-
 // Create a function that is run when the game is ending()
 function gameEnd() {
     // At the end of the loop, report a winner
